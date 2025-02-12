@@ -1,0 +1,9 @@
+Images/*
+.DS_Store*
+Results/*
+.vscode*
+*.dat
+*.npy
+AR*
+Meshes/*
+jitfailure*
