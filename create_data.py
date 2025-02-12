@@ -17,6 +17,10 @@ def sign_masking_binary(
     ):                                         
 
 
+    import os.path
+    if os.path.isfile(input_name+"_"+suffix+".vti"):
+        print(f'Masked VTI file {input_name+"_"+suffix+".vti"} already exists')
+        return 
     input_file      = input_name+".vti"
 
     # Load the VTI file
@@ -59,6 +63,11 @@ def PGM2vti(
             Raw_PGM_base_name   : int   = None,
             Bin_PGM_base_name   : int   = None,):
     
+    import os.path
+    if os.path.isfile(output_name+".vti"):
+        print(f'VTI file {output_name+".vti"} already exists')
+        return 
+
     if Bin_PGM_base_name == None:
         pgm_files_raw, image_array  = pgm2array(Raw_PGM_base_name)
     else:
@@ -82,10 +91,10 @@ def copy_folder(source, destination):
     import os
 
     if not os.path.isdir(destination):
-        os.system("mkdir "+destination)
+        os.system("mkdir -p "+destination)
         print("folder "+destination+" created")
 
-    assert os.path.isdir(destination), "source folder not found. Aborting"
+    assert os.path.isdir(source), f"source folder {source} not found. Aborting"
 
-    cp_comand = "rsync -azpV  "+source+" "+destination
+    cp_comand = "rsync -azvp  "+source+"/ "+destination
     os.system(cp_comand)
