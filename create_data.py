@@ -1,6 +1,7 @@
 import vtk
 import numpy as np
 from vtk.util.numpy_support import vtk_to_numpy, numpy_to_vtk
+from create_vti_from_scans import get_metada_PGM, pgm2array, array2vti, get_z_metadata_flatten_image
 
 
 def sign_masking_binary(
@@ -51,3 +52,40 @@ def sign_masking_binary(
     writer.Write()
 
     print("Done sign masking. "+input_name)
+
+
+def PGM2vti(
+            output_name         : int   = None,
+            Raw_PGM_base_name   : int   = None,
+            Bin_PGM_base_name   : int   = None,):
+    
+    if Bin_PGM_base_name == None:
+        pgm_files_raw, image_array  = pgm2array(Raw_PGM_base_name)
+    else:
+        pgm_files, image_array      = pgm2array(Bin_PGM_base_name)
+        pgm_files_raw, _            = pgm2array(Raw_PGM_base_name)
+    metadata_fields             = ["Slice_Location", "Pixel_Size"]
+    metadata                    = get_metada_PGM(
+                                    input_file        = pgm_files_raw[0],
+                                    metadata_fields   = metadata_fields
+                                    )
+    image_shape, pixel_size, image_pos, flatten_image_array = get_z_metadata_flatten_image(pgm_files_raw, metadata, image_array)
+    array2vti(
+            image_shape         = image_shape,
+            pixel_size          = pixel_size,
+            image_pos           = image_pos,
+            input_array         = flatten_image_array,
+            field_name          = 'pixel intensity',
+            output              = output_name)
+
+def copy_folder(source, destination):
+    import os
+
+    if not os.path.isdir(destination):
+        os.system("mkdir "+destination)
+        print("folder "+destination+" created")
+
+    assert os.path.isdir(destination), "source folder not found. Aborting"
+
+    cp_comand = "rsync -azpV  "+source+" "+destination
+    os.system(cp_comand)
