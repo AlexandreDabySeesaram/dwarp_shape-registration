@@ -13,7 +13,7 @@ import processing
 
 
 sphere_center_RL    = (120, 120, 120)                                                          
-sphere_center_LL    = (320, 120, 120)                                                          
+sphere_center_LL    = (310, 120, 120)                                                          
 sphere_radius       = 105                                                                       
 resolution          = 10                                                                                
 
@@ -24,7 +24,8 @@ domain_RL           = mshr.Sphere(center_RL, radius)
 domain_LL           = mshr.Sphere(center_LL, radius)
 mesh_shpere_RL      = mshr.generate_mesh(domain_RL, resolution)
 mesh_shpere_LL      = mshr.generate_mesh(domain_LL, resolution)
-
+print(f"LL number of nodes: {mesh_shpere_LL.num_vertices()}")
+print(f"RL number of nodes: {mesh_shpere_RL.num_vertices()}")
 
 # Import mesh
 
@@ -37,11 +38,12 @@ images_folder       = "Images/"
 Results_folder      = "Results/"
 
 N_patients          = 9
-# Patients_Ids        = list(range(2,  N_patients + 1)) # Alice
-Patients_Ids        = list(range(10,  40)) # Catalyn
+Patients_Ids        = list(range(2,  N_patients + 1)) # Alice
+# Patients_Ids        = list(range(10,  40)) # Catalyn
+# Patients_Ids        = [40]
 
-
-Lungs                       = ['RL','LL']
+Lungs                       = ['RL']
+# Lungs                       = ['RL','LL']
 
 
 # Pre processing

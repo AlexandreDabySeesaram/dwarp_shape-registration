@@ -23,7 +23,8 @@ def vtu2numpy(vtu_name):
 # user input
 
 N_patients                      = 9
-Patients_Ids                    = list(range(2,  N_patients + 1))
+# Patients_Ids                    = list(range(2,  N_patients + 1))
+Patients_Ids                    = list(range(2,  41))
 
 Lungs                           = ['RL','LL']
 
@@ -34,8 +35,8 @@ lung_mapping                    = False
 
 if shperical_mapping:
     mapping_sphere_RL           = []
-    mapping_sphere_RL           = []
-    reduced_mapping_sphere_LL   = []
+    mapping_sphere_LL           = []
+    reduced_mapping_sphere_RL   = []
     reduced_mapping_sphere_LL   = []
 if lung_mapping:  
     mapping_RL                  = []
@@ -49,17 +50,17 @@ for patient in Patients_Ids:
         if lung == "RL":
             if shperical_mapping:
                 mapping_sphere_RL.append(vtu2numpy("Results/Mapping_sphere_PA"+str(patient)+"_"+lung+"_000"))
-                reduced_mapping_sphere_RL.append(vtu2numpy("Results/Mapping_sphere_PA"+str(patient)+"_"+lung+"_000"))
+                reduced_mapping_sphere_RL.append(vtu2numpy("Results/Mapping_sphere_PA"+str(patient)+"_"+lung+"_reduced_000"))
             if lung_mapping:
                 mapping_RL.append(vtu2numpy("Results/Mapping_PA"+str(patient)+"_"+lung+"_000"))
-                reduced_mapping_RL.append(vtu2numpy("Results/Mapping_PA"+str(patient)+"_"+lung+"_000"))
+                reduced_mapping_RL.append(vtu2numpy("Results/Mapping_PA"+str(patient)+"_"+lung+"_reduced_000"))
         else:
             if shperical_mapping:
                 mapping_sphere_LL.append(vtu2numpy("Results/Mapping_sphere_PA"+str(patient)+"_"+lung+"_000"))
-                reduced_mapping_sphere_LL.append(vtu2numpy("Results/Mapping_sphere_PA"+str(patient)+"_"+lung+"_000"))
+                reduced_mapping_sphere_LL.append(vtu2numpy("Results/Mapping_sphere_PA"+str(patient)+"_"+lung+"_reduced_000"))
             if lung_mapping:
                 mapping_LL.append(vtu2numpy("Results/Mapping_PA"+str(patient)+"_"+lung+"_000"))
-                reduced_mapping_LL.append(vtu2numpy("Results/Mapping_PA"+str(patient)+"_"+lung+"_000"))
+                reduced_mapping_LL.append(vtu2numpy("Results/Mapping_PA"+str(patient)+"_"+lung+"_reduced_000"))
 
 if shperical_mapping:
     mapping_sphere_RL_array = np.hstack(mapping_sphere_RL)
@@ -76,10 +77,14 @@ if lung_mapping:
 if shperical_mapping:
     U_sphere_RL,S_sphere_RL,V_sphere_RL = np.linalg.svd(mapping_sphere_RL_array)
     U_sphere_LL,S_sphere_LL,V_sphere_LL = np.linalg.svd(mapping_sphere_LL_array)
+    U_soft_sphere_RL,S_soft_sphere_RL,V_soft_sphere_RL = np.linalg.svd(mapping_sphere_RL_array - reduced_mapping_sphere_RL_array)
+    U_soft_sphere_LL,S_soft_sphere_LL,V_soft_sphere_LL = np.linalg.svd(mapping_sphere_LL_array - reduced_mapping_sphere_LL_array)
 
 if lung_mapping:
     U_RL,S_RL,V_RL = np.linalg.svd(mapping_RL_array)
     U_LL,S_LL,V_LL = np.linalg.svd(mapping_LL_array)
+    U_soft_RL,S_soft_RL,V_soft_RL = np.linalg.svd(mapping_RL_array - reduced_mapping_RL_array)
+    U_soft_LL,S_soft_LL,V_soft_LL = np.linalg.svd(mapping_LL_array - reduced_mapping_LL_array)
 
 
 ## plot
@@ -112,7 +117,19 @@ if shperical_mapping:
     plt.xlabel('Indexes of modes')
     plt.ylabel('Singular values')
     plt.legend()
-    plt.title("Spherical mappings")
+    plt.title("Spherical mappings full mapping")
+    plt.show()
+    plt.close()
+
+    plt.figure()
+
+    plt.semilogy(S_soft_sphere_RL[:-4], label = "Right lung")
+    plt.semilogy(S_soft_sphere_LL[:-4], label = "Left lung")
+
+    plt.xlabel('Indexes of modes')
+    plt.ylabel('Singular values')
+    plt.legend()
+    plt.title("Spherical mappings without reduced-kinematics")
     plt.show()
     plt.close()
 
