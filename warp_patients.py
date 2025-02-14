@@ -9,6 +9,23 @@ import create_data
 import glob
 import processing
 
+# Create spherical mesh
+
+
+sphere_center_RL    = (120, 120, 120)                                                          
+sphere_center_LL    = (320, 120, 120)                                                          
+sphere_radius       = 105                                                                       
+resolution          = 10                                                                                
+
+center_RL           = dolfin.Point(sphere_center_RL[0], sphere_center_RL[1], sphere_center_RL[2])          
+center_LL           = dolfin.Point(sphere_center_LL[0], sphere_center_LL[1], sphere_center_LL[2])          
+radius              = sphere_radius                                                                     
+domain_RL           = mshr.Sphere(center_RL, radius)
+domain_LL           = mshr.Sphere(center_LL, radius)
+mesh_shpere_RL      = mshr.generate_mesh(domain_RL, resolution)
+mesh_shpere_LL      = mshr.generate_mesh(domain_LL, resolution)
+
+
 # Import mesh
 
 mesh_RL             = dolfin.Mesh("Meshes/mesh_RL.xml")
@@ -31,7 +48,7 @@ copy_pgms           = False
 create_raw_vti      = True
 create_bin_vti      = True
 create_signed_vti   = True
-
+from_sphere         = True
 
 if copy_pgms:
     for patient in Patients_Ids:
@@ -107,11 +124,23 @@ for patient in Patients_Ids:
     for lung in Lungs:
         if lung == "RL":
             image_name      = "Pat"+str(patient)+"_BIN"+"_signed_RL"
-            mesh            = mesh_RL
+            # mesh            = mesh_RL
+            if from_sphere:
+                mesh            = mesh_shpere_RL
+            else:
+                mesh            = mesh_RL
         elif lung == "LL":
             image_name      = "Pat"+str(patient)+"_BIN"+"_signed_LL"
-            mesh            = mesh_LL
-        filebasename    = "Mapping_PA"+str(patient)+"_"+lung
+            # mesh            = mesh_LL
+            if from_sphere:
+                mesh            = mesh_shpere_LL
+            else:
+                mesh            = mesh_LL
+
+        if from_sphere:
+            filebasename    = "Mapping_sphere_PA"+str(patient)+"_"+lung
+        else:
+            filebasename    = "Mapping_PA"+str(patient)+"_"+lung
 
         processing.reduced_kinematics(        
             result_folder                          = result_folder              ,
