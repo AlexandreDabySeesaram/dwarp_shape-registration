@@ -133,3 +133,14 @@ if shperical_mapping:
     plt.show()
     plt.close()
 
+import pandas as pd
+
+x = np.linspace(0,S_soft_sphere_RL[:-4].shape[0],S_soft_sphere_RL[:-4].shape[0])
+y_RL = S_soft_sphere_RL[:-4]
+y_LL = S_soft_sphere_LL[:-4]
+y_RL_full = S_sphere_RL[:-4]
+y_LL_full = S_sphere_LL[:-4]
+
+df = pd.DataFrame(np.stack((x,y_RL,y_LL,y_RL_full,y_LL_full)).T, columns=['N','SV_RL','SV_LL','SV_full_RL','SV_full_LL'])
+df.to_csv('Results/Figure_Singular_values.csv', index=False)
+
