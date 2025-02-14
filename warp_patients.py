@@ -37,7 +37,9 @@ images_folder       = "Images/"
 Results_folder      = "Results/"
 
 N_patients          = 9
-Patients_Ids        = list(range(2,  N_patients + 1))
+# Patients_Ids        = list(range(2,  N_patients + 1)) # Alice
+Patients_Ids        = list(range(10,  40)) # Catalyn
+
 
 Lungs                       = ['RL','LL']
 
@@ -45,8 +47,8 @@ Lungs                       = ['RL','LL']
 # Pre processing
 
 copy_pgms           = False
-create_raw_vti      = True
-create_bin_vti      = True
+create_raw_vti      = False
+create_bin_vti      = False
 create_signed_vti   = True
 from_sphere         = True
 

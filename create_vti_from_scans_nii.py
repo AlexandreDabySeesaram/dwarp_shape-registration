@@ -93,9 +93,9 @@ def coloured2bin(
     output_name         : str   = None              , 
     field_name          : str   = "pixel intensity" ,
     RL_value            : int   = 100               ,
-    LL_value            : int   = 200               ,                                           # Initial background pixel intensity
-    integer_separation  : int   = 185               ,                                           # Initial foreground pixel intensity
-    trachea_value       : int   = 80                ,                                           # Initial foreground pixel intensity
+    LL_value            : int   = 200               ,                                           
+    integer_separation  : int   = 185               ,                                           
+    trachea_value       : int   = 80                ,                                           
     ):                                         
 
 
@@ -149,15 +149,32 @@ for i in range(len(input_files)):
     nii2vti(input_files[i], output_files[i])
 
 
-for file in output_files:
+Alice_patients  = 9                                                                                     # Number of Alice patients
+i = Alice_patients                                                                                                   
 
-    patient_number = file[-2:]
-    output_name = "/Users/daby/LargeFiles/masks_from_catalyn/BIN/Pat"+patient_number+"_BIN"
+for file in output_files:
+    i+=1
+    # patient_number = file[-2:]
+    output_name = "/Users/daby/LargeFiles/masks_from_catalyn/BIN/Pat"+str(i)+"_BIN"
     coloured2bin(
     input_name          = file              , 
     output_name         = output_name       , 
     field_name          = "pixel intensity" ,
     RL_value            = 100               ,
-    LL_value            = 200               ,                                           # Initial background pixel intensity
-    integer_separation  = 185               ,                                           # Initial foreground pixel intensity
+    LL_value            = 200               ,                                           
+    integer_separation  = 185               ,                                           
     )
+
+
+catalyn_patients_ID = list(range(Alice_patients+1, len(input_files)+Alice_patients+1))
+
+for patient in catalyn_patients_ID:
+    "./Images/PA"+str(patient)+"/BIN/Pat"+str(patient)+"_BIN",
+    destination = "./Images/PA"+str(patient)+"/BIN"
+    source = "/Users/daby/LargeFiles/masks_from_catalyn/BIN/Pat"+str(patient)+"_BIN"+".vti"
+    if not os.path.isdir(destination):
+        os.system("mkdir -p "+destination)
+        print("folder "+destination+" created")
+    rsync_cmd = "rsync -azvp  "+source+" "+destination
+    import os
+    os.system(rsync_cmd)
