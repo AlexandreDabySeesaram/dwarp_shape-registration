@@ -12,8 +12,8 @@ import glob
 #%% Domain omega generation
 
 sphere_center   = (120, 120, 120)                                                           # Center of the sphere
-sphere_radius   = 75                                                                        # Radius of the sphere
-resolution      = 10                                                                        # Resolution of the mesh
+sphere_radius   = 80                                                                        # Radius of the sphere
+resolution      = 40                                                                        # Resolution of the mesh
 
 # Create a 3D spherical domain
 center          = dolfin.Point(sphere_center[0], sphere_center[1], sphere_center[2])        # Center of the disc
@@ -34,7 +34,7 @@ mesh_name                   = "3D_lung_PA5"
 image_basename              = "PA5_Binary"
 image_suffix                = "signed_int"
 result_folder               = "Results" 
-filebasename                = "mapping_lung_sobolev_lagrange_WithGradI"
+filebasename                = "mapping_lung_fine_mesh"
 image_name                  = image_basename+"_"+image_suffix
 image_folder                = "Images"
 image_path                  = image_folder+"/"+image_name

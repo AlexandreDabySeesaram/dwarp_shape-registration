@@ -15,7 +15,7 @@ import processing
 sphere_center_RL    = (120, 120, 120)                                                          
 sphere_center_LL    = (310, 120, 120)                                                          
 sphere_radius       = 105                                                                       
-resolution          = 10                                                                                
+resolution          = 35                                                                                
 
 center_RL           = dolfin.Point(sphere_center_RL[0], sphere_center_RL[1], sphere_center_RL[2])          
 center_LL           = dolfin.Point(sphere_center_LL[0], sphere_center_LL[1], sphere_center_LL[2])          
@@ -38,12 +38,12 @@ images_folder       = "Images/"
 Results_folder      = "Results/"
 
 N_patients          = 9
-Patients_Ids        = list(range(2,  N_patients + 1)) # Alice
-# Patients_Ids        = list(range(10,  40)) # Catalyn
+# Patients_Ids        = list(range(2,  N_patients + 1)) # Alice
+Patients_Ids        = list(range(10,  40)) # Catalyn
 # Patients_Ids        = [40]
 
-Lungs                       = ['RL']
-# Lungs                       = ['RL','LL']
+# Lungs                       = ['LL']
+Lungs                       = ['RL','LL']
 
 
 # Pre processing
@@ -142,9 +142,9 @@ for patient in Patients_Ids:
                 mesh            = mesh_LL
 
         if from_sphere:
-            filebasename    = "Mapping_sphere_PA"+str(patient)+"_"+lung
+            filebasename    = "Mapping_fine_mesh_sphere_PA"+str(patient)+"_"+lung
         else:
-            filebasename    = "Mapping_PA"+str(patient)+"_"+lung
+            filebasename    = "Mapping_fine_mesh_PA"+str(patient)+"_"+lung
 
         processing.reduced_kinematics(        
             result_folder                          = result_folder              ,
@@ -165,6 +165,6 @@ for patient in Patients_Ids:
             image_name                             = image_name                 ,
             mesh                                   = mesh                       ,
             tol_dU                                 = 1e-3                       ,
-            n_iter_max                             = 100                        ,
+            n_iter_max                             = 500                        ,
             images_quadrature                      = 6                          ,
             )
