@@ -31,10 +31,10 @@ mesh_lung=dolfin.Mesh("Meshes/mesh_RL.xml")
 #%% Load image
 
 mesh_name                   = "3D_lung_PA5"
-image_basename              = "PA5_Binary"
-image_suffix                = "signed_int"
+image_basename              = "Pat2_BIN"
+image_suffix                = "signed_RL"
 result_folder               = "Results" 
-filebasename                = "mapping_lung_fine_mesh"
+filebasename                = "test_mapping_PA2_L2"
 image_name                  = image_basename+"_"+image_suffix
 image_folder                = "Images"
 image_path                  = image_folder+"/"+image_name
@@ -65,14 +65,14 @@ dwarp.warp(
         images_folder                               = image_folder,
         images_basename                             = image_name,
         images_ext                                  = "vti",
-        mesh                                        = mesh_lung,
+        mesh                                        = mesh_omega,
         kinematics_type                             = "reduced",
         reduced_kinematics_model                    = reduced_kinematics_model,
         images_quadrature                           = 6,
         n_iter_max                                  = 100,
         nonlinearsolver                             = "gradient_descent",
         min_gradient_step                           = 1e-6,
-        gradient_step                               = 1,
+        gradient_step                               = 1e-2,  
         continue_after_fail                         = 1,
         write_VTU_files                             = True,
         write_VTU_files_with_preserved_connectivity = True,
@@ -97,7 +97,7 @@ dwarp.warp(
         images_folder                               = image_folder,
         images_basename                             = image_name,
         images_ext                                  = "vti",
-        mesh                                        = mesh_lung,
+        mesh                                        = mesh_omega,
         kinematics_type                             = "full",
         reduced_kinematics_model                    = reduced_kinematics_model,
         nonlinearsolver                             = "gradient_descent",
