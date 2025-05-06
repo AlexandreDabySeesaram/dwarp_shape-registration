@@ -12,15 +12,37 @@ import glob
 #%% Domain omega generation
 
 sphere_center   = (120, 120, 120)                                                           # Center of the sphere
-sphere_radius   = 80                                                                        # Radius of the sphere
-resolution      = 40                                                                        # Resolution of the mesh
+
+sphere_radius   = 75                                                                        # Radius of the sphere
+resolution      = 35                                                                        # Resolution of the mesh
 
 # Create a 3D spherical domain
 center          = dolfin.Point(sphere_center[0], sphere_center[1], sphere_center[2])        # Center of the disc
 radius          = 1.4*sphere_radius                                                         # Radius of the disc
 domain          = mshr.Sphere(center, radius)
-mesh_omega      = mshr.generate_mesh(domain, resolution)
-mesh_omega.num_vertices()
+mesh_shpere_RL      = mshr.generate_mesh(domain, resolution)
+mesh_shpere_RL.num_vertices()
+
+
+# sphere_center_RL    = (120, 120, 120)                                                          
+# sphere_center_LL    = (310, 120, 120)                                                          
+# sphere_radius       = 105                                                                       
+# resolution          = 10                                                                                
+
+# center_RL           = dolfin.Point(sphere_center_RL[0], sphere_center_RL[1], sphere_center_RL[2])          
+# center_LL           = dolfin.Point(sphere_center_LL[0], sphere_center_LL[1], sphere_center_LL[2])          
+# radius              = sphere_radius                                                                     
+# domain_RL           = mshr.Sphere(center_RL, radius)
+# domain_LL           = mshr.Sphere(center_LL, radius)
+# mesh_shpere_RL      = mshr.generate_mesh(domain_RL, resolution)
+# mesh_shpere_LL      = mshr.generate_mesh(domain_LL, resolution)
+# print(f"LL number of nodes: {mesh_shpere_LL.num_vertices()}")
+# print(f"RL number of nodes: {mesh_shpere_RL.num_vertices()}")
+
+# # Import mesh
+
+# mesh_RL             = dolfin.Mesh("Meshes/mesh_RL.xml")
+# mesh_LL             = dolfin.Mesh("Meshes/mesh_LL.xml")
 
 #%% load previous lung mesh
 
@@ -65,7 +87,7 @@ dwarp.warp(
         images_folder                               = image_folder,
         images_basename                             = image_name,
         images_ext                                  = "vti",
-        mesh                                        = mesh_omega,
+        mesh                                        = mesh_shpere_RL,
         kinematics_type                             = "reduced",
         reduced_kinematics_model                    = reduced_kinematics_model,
         images_quadrature                           = 6,
@@ -97,7 +119,7 @@ dwarp.warp(
         images_folder                               = image_folder,
         images_basename                             = image_name,
         images_ext                                  = "vti",
-        mesh                                        = mesh_omega,
+        mesh                                        = mesh_shpere_RL,
         kinematics_type                             = "full",
         reduced_kinematics_model                    = reduced_kinematics_model,
         nonlinearsolver                             = "gradient_descent",
