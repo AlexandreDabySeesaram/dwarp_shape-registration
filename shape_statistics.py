@@ -27,4 +27,4 @@ dwarp.warp(
         normalize_energies                          = False,
         gradient_type                               = "L2",
         continue_after_fail                         = True,
-        inner_product_H1_weight                     = 1e-3)xw
+        inner_product_H1_weight                     = 1e-3)
