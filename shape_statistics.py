@@ -1,14 +1,17 @@
+import dolfin
+import dolfin_warp as dwarp
 
-
+mesh = dolfin.Mesh("Meshes/Coarse_sphere_RL.xml")
 
 dwarp.warp(
-        warping_type                                = "barycenter"                                            , # registration
-        working_folder                              = "Results/barycenter",
-        images_char_func                            = False,
-        working_basename                            = filebasename,
-        mappings_folder                             = image_folder,
-        mappings_basename                           = image_name,
+        working_folder                              = "Results/barycenter", 
+        working_basename                            = "Barycenter_mapping",
+        images_folder                               = "None",
+        images_basename                             = "None",
+        mappings_folder                             = "Mappings",
+        mappings_basename                           = "Mapping_coarse_sphere_LL",
         mesh                                        = mesh,
+        warping_type                                = "barycenter"                                            , # registration
         kinematics_type                             = "full",
         nonlinearsolver                             = "gradient_descent",
         images_quadrature                           = 6,
@@ -18,18 +21,10 @@ dwarp.warp(
         gradient_step                               = 1,
         write_VTU_files                             = True,
         write_VTU_files_with_preserved_connectivity = True,
-        initialize_reduced_U_from_file              = False,
         print_iterations                            = True,
         tol_dU                                      = 1e-3, 
-        register_ref_frame                          = True,
         relax_n_iter_max                            = 30, 
         normalize_energies                          = False,
-        gradient_type                               = "Sobolev",
+        gradient_type                               = "L2",
         continue_after_fail                         = True,
-        inner_product_H1_weight                     = 1e-3,
-        initialize_U_from_file                      = True,
-        initialize_U_folder                         = result_folder, 
-        initialize_U_basename                       = filebasename+"_reduced",
-        initialize_U_ext                            = "vtu",
-        initialize_U_array_name                     = "displacement",
-        initialize_U_method                         = "interpolation") # dofs_transfer, interpolation, projection) #L2
+        inner_product_H1_weight                     = 1e-3)xw
