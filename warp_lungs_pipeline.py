@@ -13,8 +13,9 @@ import glob
 
 sphere_center   = (120, 120, 120)                                                           # Center of the sphere
 
-sphere_radius   = 75                                                                        # Radius of the sphere
-resolution      = 35                                                                        # Resolution of the mesh
+# sphere_radius   = 75                                                                        # Radius of the sphere
+sphere_radius   = 35                                                                        # Radius of the sphere
+resolution      = 10                                                                        # Resolution of the mesh
 
 # Create a 3D spherical domain
 center          = dolfin.Point(sphere_center[0], sphere_center[1], sphere_center[2])        # Center of the disc
@@ -56,7 +57,7 @@ mesh_name                   = "3D_lung_PA5"
 image_basename              = "Pat2_BIN"
 image_suffix                = "signed_RL"
 result_folder               = "Results" 
-filebasename                = "test_mapping_PA2_L2"
+filebasename                = "Martin_L2_divSigma"
 image_name                  = image_basename+"_"+image_suffix
 image_folder                = "Images"
 image_path                  = image_folder+"/"+image_name
@@ -78,37 +79,37 @@ image_file = glob.glob(image_path)
 
 #%% shape registration via dwarp
 import time
-t_start = time.time()
-dwarp.warp(
-        warping_type                                = "registration"                                            , # registration
-        working_folder                              = result_folder,
-        images_char_func                            = False,
-        working_basename                            = filebasename+"_reduced",
-        images_folder                               = image_folder,
-        images_basename                             = image_name,
-        images_ext                                  = "vti",
-        mesh                                        = mesh_shpere_RL,
-        kinematics_type                             = "reduced",
-        reduced_kinematics_model                    = reduced_kinematics_model,
-        images_quadrature                           = 6,
-        n_iter_max                                  = 100,
-        nonlinearsolver                             = "gradient_descent",
-        min_gradient_step                           = 1e-6,
-        gradient_step                               = 1e-2,  
-        continue_after_fail                         = 1,
-        write_VTU_files                             = True,
-        write_VTU_files_with_preserved_connectivity = True,
-        initialize_reduced_U_from_file              = False,
-        print_iterations                            = True,
-        tol_dU                                      = 1e-3, 
-        register_ref_frame                          = True,
-        relax_n_iter_max                            = 30, 
-        normalize_energies                          = False,
-        gradient_type                               = "Sobolev",
-        inner_product_H1_weight                     = 1e-3) #L2
+# t_start = time.time()
+# dwarp.warp(
+#         warping_type                                = "registration"                                            , # registration
+#         working_folder                              = result_folder,
+#         images_char_func                            = False,
+#         working_basename                            = filebasename+"_reduced",
+#         images_folder                               = image_folder,
+#         images_basename                             = image_name,
+#         images_ext                                  = "vti",
+#         mesh                                        = mesh_shpere_RL,
+#         kinematics_type                             = "reduced",
+#         reduced_kinematics_model                    = reduced_kinematics_model,
+#         images_quadrature                           = 6,
+#         n_iter_max                                  = 100,
+#         nonlinearsolver                             = "gradient_descent",
+#         min_gradient_step                           = 1e-6,
+#         gradient_step                               = 1e-2,  
+#         continue_after_fail                         = 1,
+#         write_VTU_files                             = True,
+#         write_VTU_files_with_preserved_connectivity = True,
+#         initialize_reduced_U_from_file              = False,
+#         print_iterations                            = True,
+#         tol_dU                                      = 1e-3, 
+#         register_ref_frame                          = True,
+#         relax_n_iter_max                            = 30, 
+#         normalize_energies                          = False,
+#         gradient_type                               = "L2",
+#         inner_product_H1_weight                     = 1e-3) #L2
 
-t_stop = time.time()
-print(f"duration (s) = {t_stop - t_start}")
+# t_stop = time.time()
+# print(f"duration (s) = {t_stop - t_start}")
 
 
 dwarp.warp(
@@ -127,21 +128,25 @@ dwarp.warp(
         n_iter_max                                  = 100,
         # relax_type                                  = "gss",
         min_gradient_step                           = 1e-6,
-        gradient_step                               = 1,
+        gradient_step                               = 1e-2,
         continue_after_fail                         = 1,
         write_VTU_files                             = True,
         write_VTU_files_with_preserved_connectivity = True,
-        initialize_reduced_U_from_file              = False,
+        initialize_reduced_U_from_file              = True,
         print_iterations                            = True,
-        tol_dU                                      = 1e-3, 
+        tol_dU                                      = 1e-8, 
         register_ref_frame                          = True,
         relax_n_iter_max                            = 30, 
         normalize_energies                          = False,
-        gradient_type                               = "Sobolev",
+        gradient_type                               = "L2",
         inner_product_H1_weight                     = 1e-3,
-        initialize_U_from_file                      = True,
+        initialize_U_from_file                      = False,
         initialize_U_folder                         = result_folder, 
         initialize_U_basename                       = filebasename+"_reduced",
         initialize_U_ext                            = "vtu",
         initialize_U_array_name                     = "displacement",
-        initialize_U_method                         = "interpolation") # dofs_transfer, interpolation, projection) #L2
+        initialize_U_method                         = "interpolation", 
+        regul_poisson                               = 0.1,
+        regul_types                                 = ["discrete-equilibrated"],
+        regul_model                                 = "ciarletgeymonatneohookean",
+        regul_levels                                = [0.1]) # dofs_transfer, interpolation, projection) #L2
