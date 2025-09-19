@@ -9,7 +9,7 @@ dwarp.warp(
         images_folder                               = "None",
         images_basename                             = "None",
         mappings_folder                             = "Mappings",
-        mappings_basename                           = "Mapping_coarse_sphere_LL",
+        mappings_basename                           = "Mapping_coarse_sphere_RL",
         mesh                                        = mesh,
         warping_type                                = "barycenter"                                            , # registration
         kinematics_type                             = "full",
