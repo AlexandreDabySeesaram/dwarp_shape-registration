@@ -1,7 +1,7 @@
 import dolfin
 import dolfin_warp as dwarp
-
-
+import os
+import glob
 
 
 
@@ -23,7 +23,8 @@ def compute_barycenter(
             mesh                                        = mesh,
             warping_type                                = "barycenter"                                            , # registration
             kinematics_type                             = "full",
-            regul_model                                 = "neohookean", # ogdenciarletgeymonatneohookean
+            regul_model                                 = regul_model, # ogdenciarletgeymonatneohookean
+            # nonlinearsolver                             = "newton",
             nonlinearsolver                             = "gradient_descent",
             images_quadrature                           = 6,
             n_iter_max                                  = 10000,
@@ -33,7 +34,7 @@ def compute_barycenter(
             write_VTU_files                             = True,
             write_VTU_files_with_preserved_connectivity = True,
             print_iterations                            = True,
-            tol_dU                                      = 1e-4, 
+            tol_dU                                      = 1e-6, 
             relax_n_iter_max                            = 30, 
             normalize_energies                          = False,
             gradient_type                               = "L2",
@@ -48,9 +49,11 @@ mesh_coarse_LL = dolfin.Mesh("Meshes/Coarse_sphere_LL.xml")
 mesh_fine_RL   = dolfin.Mesh("Meshes/Fine_sphere_RL.xml")
 mesh_fine_LL   = dolfin.Mesh("Meshes/Fine_sphere_LL.xml")
 
+
+model               = "ogdenciarletgeymonatneohookean"          # ogdenciarletgeymonatneohookean, hooke
 lung                = "RL"
-coarsness           = "coarse"
-basename            = "Barycenter_"+ coarsness+"_ogdenciarletgeymonatneohookean"
+coarsness           = "fine"
+basename            = "Barycenter_"+ coarsness+"_"+model
 # mappings_basename   = "Mapping_"+coarsness+"_sphere"
 mappings_basename   = "Mapping_"+coarsness+"_sphere"
 
@@ -66,6 +69,8 @@ match lung:
         else:
             mesh = mesh_fine_LL
 
+for vtu_filename in glob.glob("Results/barycenter/"+basename+"_"+lung+"-frame=None"+"_[0-9]*.vtu"):
+    os.remove(vtu_filename)
 
 
 
@@ -74,5 +79,5 @@ compute_barycenter(
                     lung                    = lung, 
                     basename                = basename, 
                     mappings_basename       = mappings_basename, 
-                    regul_model             = "ogdenciarletgeymonatneohookean",
+                    regul_model             = model,
                         )
