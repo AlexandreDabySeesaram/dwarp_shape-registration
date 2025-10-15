@@ -7,11 +7,17 @@ import glob
 
 def compute_barycenter(
                     mesh,
-                    lung                    = "RL", 
-                    basename                = "Barycenter_fine_mapping", 
-                    mappings_basename       = "Mapping_fine_sphere", 
-                    regul_model             = "ogdenciarletgeymonatneohookean",
-                    relax_type              = "aitken"   ):
+                    lung                        = "RL", 
+                    basename                    = "Barycenter_fine_mapping", 
+                    mappings_basename           = "Mapping_fine_sphere", 
+                    regul_model                 = "ogdenciarletgeymonatneohookean",
+                    relax_type                  = "aitken", 
+                    initialize_U_from_file      = True                                ,
+                    initialize_U_folder         = "Initialisation"                    ,
+                    initialize_U_basename       = "Mapping_coarse_sphere_RL"          ,
+                    initialize_U_ext            = "vtu"                               ,
+                    initialize_U_array_name     = "displacement"                      ,
+                    initialize_U_method         = "dofs_transfer"                     ,   ):
     dwarp.warp(
             working_folder                              = "Results/barycenter", 
             working_basename                            = basename+"_"+lung,
@@ -40,12 +46,12 @@ def compute_barycenter(
             gradient_type                               = "L2",
             continue_after_fail                         = True,
             inner_product_H1_weight                     = 1e-3, 
-            initialize_U_from_file                      = True                                ,
-            initialize_U_folder                         = "Initialisation"                                ,
-            initialize_U_basename                       = "Mapping_coarse_sphere_RL"                                ,
-            initialize_U_ext                            = "vtu"                               ,
-            initialize_U_array_name                     = "displacement"                      ,
-            initialize_U_method                         = "dofs_transfer"                     , # dofs_transfer, interpolation, projection
+            initialize_U_from_file                      = initialize_U_from_file                                ,
+            initialize_U_folder                         = initialize_U_folder                                ,
+            initialize_U_basename                       = initialize_U_basename                                ,
+            initialize_U_ext                            = initialize_U_ext                              ,
+            initialize_U_array_name                     = initialize_U_array_name                  ,
+            initialize_U_method                         = initialize_U_method                     , # dofs_transfer, interpolation, projection
 
             )
 
@@ -84,9 +90,16 @@ for vtu_filename in glob.glob("Results/barycenter/"+basename+"_"+lung+"-frame=No
 
 compute_barycenter(
                     mesh,
-                    lung                    = lung, 
-                    basename                = basename, 
-                    mappings_basename       = mappings_basename, 
-                    regul_model             = model,
-                    relax_type              = "backtracking"
+                    lung                        = lung, 
+                    basename                    = basename, 
+                    mappings_basename           = mappings_basename, 
+                    regul_model                 = model,
+                    relax_type                  = "backtracking", 
+                    initialize_U_from_file      = True                                ,
+                    initialize_U_folder         = "Initialisation"                    ,
+                    initialize_U_basename       = "Mapping_"+coarsness+"_sphere_RL"   ,
+                    initialize_U_ext            = "vtu"                               ,
+                    initialize_U_array_name     = "displacement"                      ,
+                    initialize_U_method         = "dofs_transfer"                     , 
+
                         ) 
