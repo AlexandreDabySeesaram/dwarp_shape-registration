@@ -11,7 +11,7 @@ def compute_barycenter(
                     basename                = "Barycenter_fine_mapping", 
                     mappings_basename       = "Mapping_fine_sphere", 
                     regul_model             = "ogdenciarletgeymonatneohookean",
-                        ):
+                    relax_type              = "aitken"   ):
     dwarp.warp(
             working_folder                              = "Results/barycenter", 
             working_basename                            = basename+"_"+lung,
@@ -28,7 +28,7 @@ def compute_barycenter(
             nonlinearsolver                             = "gradient_descent",
             images_quadrature                           = 6,
             n_iter_max                                  = 10000,
-            # relax_type                                  = "gss",
+            relax_type                                  = relax_type,
             min_gradient_step                           = 1e-6,
             gradient_step                               = 1,
             write_VTU_files                             = True,
@@ -39,7 +39,15 @@ def compute_barycenter(
             normalize_energies                          = False,
             gradient_type                               = "L2",
             continue_after_fail                         = True,
-            inner_product_H1_weight                     = 1e-3)
+            inner_product_H1_weight                     = 1e-3, 
+            initialize_U_from_file                      = True                                ,
+            initialize_U_folder                         = "Initialisation"                                ,
+            initialize_U_basename                       = "Mapping_coarse_sphere_RL"                                ,
+            initialize_U_ext                            = "vtu"                               ,
+            initialize_U_array_name                     = "displacement"                      ,
+            initialize_U_method                         = "dofs_transfer"                     , # dofs_transfer, interpolation, projection
+
+            )
 
 
 
@@ -52,8 +60,8 @@ mesh_fine_LL   = dolfin.Mesh("Meshes/Fine_sphere_LL.xml")
 
 model               = "ogdenciarletgeymonatneohookean"          # ogdenciarletgeymonatneohookean, hooke
 lung                = "RL"
-coarsness           = "fine"
-basename            = "Barycenter_"+ coarsness+"_"+model
+coarsness           = "coarse"
+basename            = "init_2_Barycenter_"+ coarsness+"_"+model
 # mappings_basename   = "Mapping_"+coarsness+"_sphere"
 mappings_basename   = "Mapping_"+coarsness+"_sphere"
 
@@ -72,7 +80,7 @@ match lung:
 for vtu_filename in glob.glob("Results/barycenter/"+basename+"_"+lung+"-frame=None"+"_[0-9]*.vtu"):
     os.remove(vtu_filename)
 
-
+ 
 
 compute_barycenter(
                     mesh,
@@ -80,4 +88,5 @@ compute_barycenter(
                     basename                = basename, 
                     mappings_basename       = mappings_basename, 
                     regul_model             = model,
-                        )
+                    relax_type              = "backtracking"
+                        ) 
