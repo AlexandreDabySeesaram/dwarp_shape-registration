@@ -66,7 +66,7 @@ mesh_fine_LL   = dolfin.Mesh("Meshes/Fine_sphere_LL.xml")
 
 model               = "ogdenciarletgeymonatneohookean"          # ogdenciarletgeymonatneohookean, hooke
 lung                = "RL"
-coarsness           = "coarse"
+coarsness           = "fine"
 basename            = "init_2_Barycenter_"+ coarsness+"_"+model
 # mappings_basename   = "Mapping_"+coarsness+"_sphere"
 mappings_basename   = "Mapping_"+coarsness+"_sphere"
