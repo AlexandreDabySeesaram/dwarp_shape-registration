@@ -64,6 +64,7 @@ mesh_fine_RL   = dolfin.Mesh("Meshes/Fine_sphere_RL.xml")
 mesh_fine_LL   = dolfin.Mesh("Meshes/Fine_sphere_LL.xml")
 
 
+
 model               = "ogdenciarletgeymonatneohookean"          # ogdenciarletgeymonatneohookean, hooke
 lung                = "RL"
 coarsness           = "fine"
