@@ -9,7 +9,7 @@ import create_data
 import glob
 import processing
 
-job = "registration_config"
+job = "configurations/registration_config"
 try:
     import tomllib
     config = tomllib.load(f)
