@@ -28,7 +28,8 @@ match fineness:
                 shutil.copy(src, dst)
                 print(f"Copied {src} -> {dst}")
             else:
-                print(f"⚠️ File not found: {src}")
+                print(f"File not found: {src}")
+
     case "fine":
         basename = "../rMartin_results/Lungs_mapping"
         # Load the .vtu file
@@ -59,9 +60,9 @@ match fineness:
                 shutil.copy(src_RL, dst_RL)
                 print(f"Copied {src_RL} -> {dst_RL}")
             else:
-                print(f"⚠️ File not found: {src_RL}")
+                print(f"File not found: {src_RL}")
             if os.path.exists(src_LL):
                 shutil.copy(src_LL, dst_LL)
                 print(f"Copied {src_LL} -> {dst_LL}")
             else:
-                print(f"⚠️ File not found: {src_LL}")
+                print(f"File not found: {src_LL}")
