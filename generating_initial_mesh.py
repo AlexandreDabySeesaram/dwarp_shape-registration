@@ -8,7 +8,7 @@ fineness    = "coarse"
 match fineness:
     case "coarse":
         for lung in lungs:
-            mesh = meshio.read("Results/Mapping_sphere_PA37_"+lung+"-frame=0_007.vtu")
+            mesh = meshio.read("Results/Mapping_sphere_PA37_"+lung+"_000.vtu")
 
             morphed_mesh = meshio.Mesh(
                 points=mesh.points + mesh.point_data.get("displacement"),
@@ -22,7 +22,7 @@ match fineness:
     case "fine":
         basename = "../rMartin_results/Lungs_mapping"
         for lung in lungs:
-            mesh = meshio.read(basename+"/Mapping_fine_mesh_sphere_PA37_"+lung+"-frame=0_007.vtu")
+            mesh = meshio.read(basename+"/Mapping_fine_mesh_sphere_PA37_"+lung+"_000.vtu")
 
             morphed_mesh = meshio.Mesh(
                 points=mesh.points + mesh.point_data.get("displacement"),
