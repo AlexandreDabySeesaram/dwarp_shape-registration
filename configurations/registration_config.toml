@@ -5,7 +5,7 @@
 ####################################################
 
 [tracking]
-reduced_kinematics_model            = "translation+scaling"
+reduced_kinematics_model            = "translation+rotation+scaling"
 mesh_initialisation                 = "morphed_sphere" #lung, morphed_sphere
 fineness                            = "Coarse"
 lungs                               = ["RL", "LL"]
