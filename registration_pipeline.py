@@ -9,12 +9,15 @@ import create_data
 import glob
 import processing
 
-
-import tomllib
-
 job = "registration_config"
+try:
+    import tomllib
+    config = tomllib.load(f)
+except: 
+    import tomli
+    with open(registration_config+".toml", "rb") as f:
+        data = tomli.load(f)
 
-config = tomllib.load(f)
 
 mesh_dict = {}
 
