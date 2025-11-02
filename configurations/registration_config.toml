@@ -28,4 +28,5 @@ mesh_folder                         = "./Meshes"
 result_folder                       = "./Results"
 image_folder                        = "./Images"
 filebasename                        = "Mapping"
+rm_existing                         = true
 

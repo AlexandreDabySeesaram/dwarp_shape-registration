@@ -76,6 +76,9 @@ for patient in Patients_Ids:
         mesh            = mesh_dict[lung]
         filebasename    = config["names"]["filebasename"]+"_"+config["tracking"]["fineness"]+"_mesh_"+config["tracking"]["mesh_initialisation"]+"_PA"+str(patient)+"_"+lung
 
+        if config["names"]["rm_existing"]:
+            for vtu_filename in glob.glob(result_folder+"/"+filebasename+"-frame=None"+"_[0-9]*.vtu"):
+                os.remove(vtu_filename)
         processing.reduced_kinematics(        
             result_folder                          = result_folder                                  ,
             filebasename                           = filebasename                                   ,
