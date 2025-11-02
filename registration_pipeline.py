@@ -15,7 +15,7 @@ try:
     config = tomllib.load(f)
 except: 
     import tomli
-    with open(registration_config+".toml", "rb") as f:
+    with open(job+".toml", "rb") as f:
         data = tomli.load(f)
 
 
