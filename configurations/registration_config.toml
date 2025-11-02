@@ -6,7 +6,7 @@
 
 [tracking]
 reduced_kinematics_model            = "translation+scaling"
-mesh_initialisation                 = "sphere" #lung, morphed_sphere
+mesh_initialisation                 = "morphed_sphere" #lung, morphed_sphere
 fineness                            = "Coarse"
 lungs                               = ["RL", "LL"]
 patients                            = [10,40]
