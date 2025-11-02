@@ -2,7 +2,7 @@ import meshio
 import numpy as np
 
 
-lungs       = ["RL"]
+lungs       = ["RL", "LL"]
 fineness    = "coarse"
 
 match fineness:
@@ -17,8 +17,8 @@ match fineness:
 
             # Write to Dolfin XML
             meshio.write(
-                "Meshes/Fine_morphed_sphere_"+lung+".xml", morphed_mesh, file_format="dolfin-xml")
-
+                "Meshes/Coarse_morphed_sphere_"+lung+".xml", morphed_mesh, file_format="dolfin-xml")
+            print(f"* Finished writing {fineness} {lung}.")
     case "fine":
         basename = "../rMartin_results/Lungs_mapping"
         for lung in lungs:
@@ -32,5 +32,6 @@ match fineness:
             # Write to Dolfin XML
             meshio.write(
                 "Meshes/Fine_morphed_sphere_"+lung+".xml", morphed_mesh, file_format="dolfin-xml")
+            print(f"* Finished writing {fineness} {lung}.")
 
 
