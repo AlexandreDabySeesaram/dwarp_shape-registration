@@ -85,7 +85,6 @@ match lung:
 for vtu_filename in glob.glob("Results/barycenter/"+basename+"_"+lung+"-frame=None"+"_[0-9]*.vtu"):
     os.remove(vtu_filename)
 
- 
 
 compute_barycenter(
                     mesh,
