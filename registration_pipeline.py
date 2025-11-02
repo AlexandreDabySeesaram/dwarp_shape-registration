@@ -16,7 +16,7 @@ try:
 except: 
     import tomli
     with open(job+".toml", "rb") as f:
-        data = tomli.load(f)
+        config = tomli.load(f)
 
 
 mesh_dict = {}
