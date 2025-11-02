@@ -11,7 +11,7 @@ match fineness:
             mesh = meshio.read("Results/Mapping_sphere_PA37_"+lung+"_000.vtu")
 
             morphed_mesh = meshio.Mesh(
-                points=mesh.points + mesh.point_data.get("displacement"),
+                points=mesh.points + 0.5*mesh.point_data.get("displacement"),
                 cells=mesh.cells
             )
 
@@ -25,7 +25,7 @@ match fineness:
             mesh = meshio.read(basename+"/Mapping_fine_mesh_sphere_PA37_"+lung+"_000.vtu")
 
             morphed_mesh = meshio.Mesh(
-                points=mesh.points + mesh.point_data.get("displacement"),
+                points=mesh.points + 0.5*mesh.point_data.get("displacement"),
                 cells=mesh.cells
             )
 
