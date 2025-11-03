@@ -3,7 +3,7 @@ import numpy as np
 
 
 lungs       = ["RL", "LL"]
-fineness    = "coarse" 
+fineness    = "fine" 
 
 match fineness:
     case "coarse":
