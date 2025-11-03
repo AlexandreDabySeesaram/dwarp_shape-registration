@@ -64,7 +64,7 @@ Patients_Ids        = list(range(config["tracking"]["patients"][0],  config["tra
 
 
 
-## Tracking
+## Tracking using dolfin warp and processing functions
 
 result_folder               = config["names"]["result_folder"]
 reduced_kinematics_model    = config["tracking"]["reduced_kinematics_model"]
