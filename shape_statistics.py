@@ -63,7 +63,7 @@ mesh_fine_LL   = dolfin.Mesh("Meshes/Fine_sphere_LL.xml")
 
 
 
-model               = "ogdenciarletgeymonatneohookean"          # ogdenciarletgeymonatneohookean, hooke
+model               = "hooke"          # ogdenciarletgeymonatneohookean, hooke
 lung                = "RL"
 coarsness           = "coarse" # fine, coarse
 basename            = "init_False_Barycenter_"+ coarsness+"_"+model
@@ -93,7 +93,7 @@ compute_barycenter(
         mappings_basename           = mappings_basename, 
         regul_model                 = model,
         relax_type                  = "backtracking", 
-        initialize_U_from_file      = False                                ,
+        initialize_U_from_file      = False                               ,
         initialize_U_folder         = "Initialisation"                    ,
         initialize_U_basename       = "Mapping_"+coarsness+"_sphere_RL"   ,
         initialize_U_ext            = "vtu"                               ,
