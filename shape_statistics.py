@@ -3,7 +3,15 @@ import dolfin_warp as dwarp
 import os
 import glob
 
-
+#job = "configurations/registration_config"
+job = "configurations/barycenter_config"
+try:
+    import tomllib
+    config = tomllib.load(f)
+except: 
+    import tomli
+    with open(job+".toml", "rb") as f:
+ 
 
 def compute_barycenter(
         mesh,
