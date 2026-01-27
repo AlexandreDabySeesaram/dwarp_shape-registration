@@ -1,0 +1,33 @@
+####################################################
+###                                              ###
+###                   TRACKING                   ###
+###                                              ###
+####################################################
+
+[tracking]
+reduced_kinematics_model            = "translation+rotation+scaling"
+mesh_initialisation                 = "morphed_sphere" #lung, morphed_sphere
+fineness                            = "Fine"
+# lungs                               = ["RL", "LL"]
+lungs                               = ["RL", "LL"]
+patients                            = [1,40]
+tol_dU_RK                           = 1e-3 
+tol_dU                              = 1e-3
+n_iter_max_RK                       = 100
+n_iter_max                          = 500       
+images_quadrature_RK                = 6
+images_quadrature                   = 6
+
+####################################################
+###                                              ###
+###                    NAMES                     ###
+###                                              ###
+####################################################
+
+[names]
+mesh_folder                         = "./Meshes"
+result_folder                       = "./Results/Initialised_registration"
+image_folder                        = "./Images"
+filebasename                        = "Mapping_debug"
+rm_existing                         = true
+

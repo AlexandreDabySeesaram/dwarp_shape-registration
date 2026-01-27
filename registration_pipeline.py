@@ -3,13 +3,17 @@ import numpy as np
 from vtk.util.numpy_support import vtk_to_numpy, numpy_to_vtk
 import dolfin
 import dolfin_warp as dwarp
-import mshr
+try:
+    import mshr
+except:
+    print("Warning: failed to load mshr")
 import dolfin_mech as dmech
 import create_data
 import glob
 import processing
 
-job = "configurations/registration_config"
+#job = "configurations/registration_config"
+job = "configurations/registration_config_debug"
 try:
     import tomllib
     config = tomllib.load(f)
