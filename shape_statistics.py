@@ -5,12 +5,13 @@ import glob
 
 #job = "configurations/registration_config"
 job = "configurations/barycenter_config"
-try:
-    import tomllib
-    config = tomllib.load(f)
-except: 
-    import tomli
-    with open(job+".toml", "rb") as f:
+ try:
+     import tomllib  # Python 3.11+
+ except ImportError:
+     import tomli as tomllib  # Older versions
+ 
+ with open(f"{job}.toml", "rb") as f:
+     config = tomllib.load(f)
  
 
 def compute_barycenter(
@@ -71,10 +72,10 @@ mesh_fine_LL   = dolfin.Mesh("Meshes/Fine_sphere_LL.xml")
 
 
 
-model               = "ogdenciarletgeymonatneohookean"          # ogdenciarletgeymonatneohookean, hooke
+model               = "hooke"          # ogdenciarletgeymonatneohookean, hooke
 lung                = "RL"
 coarsness           = "fine" # fine, coarse
-basename            = "init_False_Barycenter_"+ coarsness+"_"+model
+basename            = "X86_Barycenter_"+ coarsness+"_"+model
 # mappings_basename   = "Mapping_"+coarsness+"_sphere"
 mappings_basename   = "Mapping_"+coarsness+"_sphere"
 
