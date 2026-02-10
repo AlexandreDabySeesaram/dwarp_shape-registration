@@ -5,14 +5,14 @@ import glob
 
 #job = "configurations/registration_config"
 job = "configurations/barycenter_config"
- try:
-     import tomllib  # Python 3.11+
- except ImportError:
-     import tomli as tomllib  # Older versions
- 
- with open(f"{job}.toml", "rb") as f:
-     config = tomllib.load(f)
- 
+try:
+    import tomllib  # Python 3.11+
+except ImportError:
+    import tomli as tomllib  # Older versions
+
+with open(f"{job}.toml", "rb") as f:
+    config = tomllib.load(f)
+
 
 def compute_barycenter(
         mesh,
@@ -63,49 +63,70 @@ def compute_barycenter(
             )
 
 
+ 
+mesh_dict = {}
+
+match config["mappings"]["mesh_initialisation"]:
+    case "sphere":
+        match config["mappings"]["fineness"]:
+            case "fine":
+                resolution = 35
+            case "Coarse":
+                resolution = 5
+
+        sphere_center_RL    = (120, 120, 120)                                                          
+        sphere_center_LL    = (310, 120, 120)                                                          
+        sphere_radius       = 105                                                                       
+        center_RL           = dolfin.Point(sphere_center_RL[0], sphere_center_RL[1], sphere_center_RL[2])          
+        center_LL           = dolfin.Point(sphere_center_LL[0], sphere_center_LL[1], sphere_center_LL[2])          
+        radius              = sphere_radius                                                                     
+        domain_RL           = mshr.Sphere(center_RL, radius)
+        domain_LL           = mshr.Sphere(center_LL, radius)
+        mesh_dict["RL"]     = mshr.generate_mesh(domain_RL, resolution)
+        mesh_dict["LL"]     = mshr.generate_mesh(domain_LL, resolution)
 
 
-mesh_coarse_RL = dolfin.Mesh("Meshes/Coarse_sphere_RL.xml")
-mesh_coarse_LL = dolfin.Mesh("Meshes/Coarse_sphere_LL.xml")
-mesh_fine_RL   = dolfin.Mesh("Meshes/Fine_sphere_RL.xml")
-mesh_fine_LL   = dolfin.Mesh("Meshes/Fine_sphere_LL.xml")
+    case "lung":
+        if "RL" in config["range"]["lungs"]:
+            mesh_dict["RL"] = dolfin.Mesh(config["names"]["mesh_folder"]+"/mesh_RL.xml")
+            print("* RL mesh loaded from lung mesh")
+        if "LL" in config["range"]["lungs"]:
+            mesh_dict["LL"] = dolfin.Mesh(config["names"]["mesh_folder"]+"/mesh_LL.xml")
+            print("* LL mesh loaded from lung mesh")
+
+    case "morphed_sphere":
+        if "RL" in config["range"]["lungs"]:
+            mesh_dict["RL"] = dolfin.Mesh(config["names"]["mesh_folder"]+"/"+config["mappings"]["fineness"]+"_morphed_sphere_RL.xml")
+            print("* RL mesh loaded from morphed_sphere")
+        if "LL" in config["range"]["lungs"]:
+            mesh_dict["LL"] = dolfin.Mesh(config["names"]["mesh_folder"]+"/"+config["mappings"]["fineness"]+"_morphed_sphere_LL.xml")
+            print("* LL mesh loaded from morphed_sphere")
 
 
+Patients_Ids        = list(range(config["range"]["patients"][0],  config["range"]["patients"][1])) 
 
-model               = "hooke"          # ogdenciarletgeymonatneohookean, hooke
-lung                = "RL"
-coarsness           = "fine" # fine, coarse
-basename            = "X86_Barycenter_"+ coarsness+"_"+model
-# mappings_basename   = "Mapping_"+coarsness+"_sphere"
-mappings_basename   = "Mapping_"+coarsness+"_sphere"
-
-match lung:
-    case "RL": 
-        if coarsness == "coarse":
-            mesh = mesh_coarse_RL
-        else:
-            mesh = mesh_fine_RL
-    case "LL": 
-        if coarsness == "coarse":
-            mesh = mesh_coarse_LL
-        else:
-            mesh = mesh_fine_LL
-
-for vtu_filename in glob.glob("Results/barycenter/"+basename+"_"+lung+"-frame=None"+"_[0-9]*.vtu"):
-    os.remove(vtu_filename)
+model               = config["barycenter"]["model"]
+lungs               = config["range"]["lungs"]
+mappings_basename   = config["names"]["mappings_basename"]+config["mappings"]["fineness"]+config["mappings"]["mesh_initialisation"]
+basename            = config["barycenter"]["basename"]
 
 
-compute_barycenter(
-        mesh,
-        lung                        = lung, 
-        basename                    = basename, 
-        mappings_basename           = mappings_basename, 
-        regul_model                 = model,
-        relax_type                  = "backtracking", 
-        initialize_U_from_file      = False                               ,
-        initialize_U_folder         = "Initialisation"                    ,
-        initialize_U_basename       = "Mapping_"+coarsness+"_sphere_RL"   ,
-        initialize_U_ext            = "vtu"                               ,
-        initialize_U_array_name     = "displacement"                      ,
-        initialize_U_method         = "dofs_transfer"                     , 
-        ) 
+for lung in lungs:
+
+    for vtu_filename in glob.glob("Results/barycenter/"+basename+"_"+lung+"-frame=None"+"_[0-9]*.vtu"):
+        os.remove(vtu_filename)
+
+    compute_barycenter(
+            mesh                        = mesh_dict[lung],
+            lung                        = lung, 
+            basename                    = basename+lung, 
+            mappings_basename           = mappings_basename, 
+            regul_model                 = model,
+            relax_type                  = "backtracking", 
+            initialize_U_from_file      = False                               ,
+            # initialize_U_folder         = "Initialisation"                    ,
+            # initialize_U_basename       = "Mapping_"+coarsness+"_sphere_RL"   ,
+            # initialize_U_ext            = "vtu"                               ,
+            # initialize_U_array_name     = "displacement"                      ,
+            # initialize_U_method         = "dofs_transfer"                     , 
+            ) 
