@@ -1,0 +1,53 @@
+
+###                                              ###
+###              LOADING MAPPINGS                ###
+###                                              ###
+####################################################
+
+
+[mappings]
+
+coarsness		= "fine" # fine, coarse
+basename_left 		= "Mapping"
+basename_right		= "sphere"
+mesh_initialisation     = "morphed_sphere" #lung, morphed_sphere
+fineness                            = "Fine"
+
+####################################################
+###                                              ###
+###              RANGE OF STUDY          	 ###
+###                                              ###
+####################################################
+
+[range]
+
+lungs			= ["RL", "LL"]
+patients                = [1,10]
+
+
+
+####################################################
+###                                              ###
+###              METRIC OF BARYCENTER          	 ###
+###                                              ###
+####################################################
+
+[barycenter]
+
+model                   = "hooke"#  ogdenciarletgeymonatneohookean
+basename                = "morphed_barycenter" 
+
+
+
+
+####################################################
+###                                              ###
+###                    NAMES                     ###
+###                                              ###
+####################################################
+
+[names]
+mesh_folder                         = "./Meshes"
+result_folder                       = "./Results/Initialised_registration"
+mappings_basename                    = "Mapping"
+rm_existing                         = true
