@@ -1,6 +1,16 @@
 import os
 import shutil
 
+job = "configurations/registration_config_debug"
+try:
+    import tomllib
+    config = tomllib.load(f)
+except: 
+    import tomli
+    with open(job+".toml", "rb") as f:
+        config = tomli.load(f)
+
+
 #source_dir = '/Users/daby/LargeFiles/rMartin_Results/shape_registration/' 
 #targ_dir = '/Users/daby/Documents/Code/dwarp_shape-registration/Mappings/' 
 
