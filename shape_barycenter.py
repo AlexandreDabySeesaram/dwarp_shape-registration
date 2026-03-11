@@ -3,8 +3,9 @@ import dolfin_warp as dwarp
 import os
 import glob
 
-#job = "configurations/registration_config"
-job = "configurations/barycenter_config"
+#job = "confegurations/registration_config"
+#job = "configurations/barycenter_config"
+job = "configurations/barycenter_arm_config"
 try:
     import tomllib  # Python 3.11+
 except ImportError:
@@ -107,10 +108,10 @@ Patients_Ids        = list(range(config["range"]["patients"][0],  config["range"
 
 model               = config["barycenter"]["model"]
 lungs               = config["range"]["lungs"]
-mappings_basename   = config["names"]["mappings_basename"]+config["mappings"]["fineness"]+config["mappings"]["mesh_initialisation"]
-basename            = config["barycenter"]["basename"]
+mappings_basename   = config["names"]["mappings_basename"]+"_"+config["mappings"]["fineness"]+"_mesh_"+config["mappings"]["mesh_initialisation"]
+basename            = config["barycenter"]["basename"]+"_"+config["mappings"]["fineness"]+"_mesh_"+config["mappings"]["mesh_initialisation"]+"_"+model
 
-
+print(f"basename is {basename}")
 for lung in lungs:
 
     for vtu_filename in glob.glob("Results/barycenter/"+basename+"_"+lung+"-frame=None"+"_[0-9]*.vtu"):
@@ -119,7 +120,7 @@ for lung in lungs:
     compute_barycenter(
             mesh                        = mesh_dict[lung],
             lung                        = lung, 
-            basename                    = basename+lung, 
+            basename                    = basename, 
             mappings_basename           = mappings_basename, 
             regul_model                 = model,
             relax_type                  = "backtracking", 

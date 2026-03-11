@@ -1,16 +1,6 @@
 import os
 import shutil
 
-job = "configurations/registration_config_debug"
-try:
-    import tomllib
-    config = tomllib.load(f)
-except: 
-    import tomli
-    with open(job+".toml", "rb") as f:
-        config = tomli.load(f)
-
-
 #source_dir = '/Users/daby/LargeFiles/rMartin_Results/shape_registration/' 
 #targ_dir = '/Users/daby/Documents/Code/dwarp_shape-registration/Mappings/' 
 
@@ -37,7 +27,7 @@ for lung in lungs:
         
         if os.path.exists(source_path):
             shutil.move(source_path, targ_path)
-           print(f"Moved: {old_filename} -> {new_filename}")
+            print(f"Moved: {old_filename} -> {new_filename}")
         else:
             print(f"Warning: {old_filename} not found.")
 
