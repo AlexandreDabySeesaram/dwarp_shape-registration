@@ -16,11 +16,13 @@ for lung in lungs:
     for i in range(1, 40):
         # We use :01d or just the number because the original uses 1, 2, 3...
         #old_filename = f"Mapping_Fine_mesh_morphed_sphere_PA{i}_{lung}_000.vtu"
-        old_filename = f"Mapping_arm_Fine_mesh_morphed_sphere_PA{i}_{lung}_000.vtu"
+        #old_filename = f"Mapping_arm_Fine_mesh_morphed_sphere_PA{i}_{lung}_000.vtu"
+        old_filename = f"Mapping_arm_Fine_mesh_morphed_sphere_PA{i}_{lung}_reduced_000.vtu"
         
         # We use :02d to ensure it becomes 01, 02, etc.
         #new_filename = f"Mapping_Fine_mesh_morphed_sphere_{lung}_{i:02d}.vtu"
-        new_filename = f"Mapping_arm_Fine_mesh_morphed_sphere_{lung}_{i:02d}.vtu"
+        #new_filename = f"Mapping_arm_Fine_mesh_morphed_sphere_{lung}_{i:02d}.vtu"
+        new_filename = f"Mapping_arm_Fine_mesh_morphed_sphere_reduced_{lung}_{i:02d}.vtu"
         
         source_path = os.path.join(source_dir, old_filename)
         targ_path = os.path.join(targ_dir, new_filename)

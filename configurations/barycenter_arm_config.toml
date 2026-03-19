@@ -20,7 +20,8 @@ fineness                            = "Fine"
 
 [range]
 
-lungs			= ["RL", "LL"]
+#lungs			= ["RL", "LL"]
+lungs			= ["LL"]
 patients                = [1,10]
 
 
@@ -33,8 +34,8 @@ patients                = [1,10]
 
 [barycenter]
 
-model                   = "ogdenciarletgeymonatneohookean"#  ogdenciarletgeymonatneohookean
-basename                = "barycenter_arm" 
+model                   = "hooke"#  ogdenciarletgeymonatneohookean
+basename                = "barycenter_arm_debug" 
 
 
 
