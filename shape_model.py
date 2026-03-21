@@ -199,9 +199,7 @@ def reconstruct_shape(U, S, barycenter, slider_vals):
         
     return new_shape
 
-# --- Example Usage ---
-# Slider values of 1.0 represent the 'average' influence of that component.
-# Setting a slider to 0.0 removes that mode's influence entirely.
+
 sliders = [1.2, -0.5, 0.1] # Tweak these to change the shape
 new_deformed_shape = reconstruct_shape(
     U_soft_RL_centered, 
