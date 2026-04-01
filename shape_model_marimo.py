@@ -68,6 +68,7 @@ def _(plotter):
 
     N_patients = 40  
     Patients_Ids = list(range(0, N_patients + 1))  
+    # Patients_Ids = list(range(10, N_patients + 1))  
     Lungs = ['RL']  
     mapping_RL = []
     indexes_mapping_RL = []
@@ -181,12 +182,6 @@ def _(mo):
     return
 
 
-@app.cell
-def _(df_pl):
-    df_pl
-    return
-
-
 @app.cell(hide_code=True)
 def _():
     import marimo as mo
@@ -217,7 +212,7 @@ def _(color_selector, df_latent, mo, n_modes_slider):
 
     # Convert pandas DataFrame to Polars 
     df_pl = pl.from_pandas(df_latent.iloc[:, :n_modes_slider.value]) 
-    df_pl = pl.from_pandas(df_latent.iloc[:, :n_modes_slider.value]).rename({"Patient_ID": "uid"})
+    # df_pl = pl.from_pandas(df_latent.iloc[:, :n_modes_slider.value]).rename({"Patient_ID": "uid"})
     # Interactive parallel coordinate plot
     parallel_plot = mo.ui.anywidget(
         ParallelCoordinates(
@@ -278,7 +273,7 @@ def _(
                 patient = df_pl["Patient_ID"][idx]
             except: 
                 patient = df_pl["uid"][idx]
-            disp, base_mesh = vtu2numpy(mapping_base_name + '_' + lung + '_' + str(patient),return_output=True)
+            disp, base_mesh = vtu2numpy(mapping_base_name + '_' + lung + '_' + str(patient).zfill(2),return_output=True)
 
 
             # Reshape to (N, 3) for PyVista
@@ -320,19 +315,13 @@ def _(
     return (get_mesh_grid,)
 
 
-@app.cell
-def _():
-    return
-
-
 @app.cell(column=2)
-def _(get_mesh_grid, parallel_plot):
+async def _(get_mesh_grid, parallel_plot):
     # import nest_asyncio
     # nest_asyncio.apply()
 
-
-    # from pyvista.trame.jupyter import launch_server
-    # await launch_server().ready
+    from pyvista.trame.jupyter import launch_server
+    await launch_server().ready
 
     get_mesh_grid(parallel_plot.widget.filtered_indices)
     return
