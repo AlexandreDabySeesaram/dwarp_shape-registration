@@ -4,7 +4,19 @@ __generated_with = "0.22.0"
 app = marimo.App(width="columns")
 
 
-@app.cell(column=0)
+@app.cell(column=0, hide_code=True)
+def _(mo):
+    mo.md(r"""
+    This notebook proposes an interactive way to explore the "high" dimensional (more than 3 components) latent space composing the lungs shapes database
+
+    ## Computing the latent space
+
+    We first compute the latent space using an SVD on the centred mappings (mappings from which both the reduced kinematics and the shape barycenter have been deduced)
+    """)
+    return
+
+
+@app.cell(hide_code=True)
 def _(plotter):
     import vtk
     import numpy as np
@@ -12,7 +24,6 @@ def _(plotter):
     import pyvista as pv
     import matplotlib.pyplot as plt
     job = 'configurations/barycenter_arm_config'
-
 
 
 
@@ -54,9 +65,9 @@ def _(plotter):
         plt.tight_layout()
         plt.savefig('latent_space_3d.png')
         plt.show()  
-    
+
     N_patients = 40  
-    Patients_Ids = list(range(2, N_patients + 1))  
+    Patients_Ids = list(range(0, N_patients + 1))  
     Lungs = ['RL']  
     mapping_RL = []
     indexes_mapping_RL = []
@@ -71,15 +82,16 @@ def _(plotter):
         for lung in Lungs:
             if lung == 'RL':  
                 try:
-                    mapping_RL.append(vtu2numpy(mapping_base_name + '_' + lung + '_' + str(patient)))
-                    reduced_mapping_RL.append(vtu2numpy(mapping_base_name + '_reduced' + '_' + lung + '_' + str(patient)))  # Labeling
+                    mapping_RL.append(vtu2numpy(mapping_base_name + '_' + lung + '_' + str(patient).zfill(2)))
+                    reduced_mapping_RL.append(vtu2numpy(mapping_base_name + '_reduced' + '_' + lung + '_' + str(patient).zfill(2)))  # Labeling
                     indexes_mapping_RL.append(patient)
+                    print(f'Mapping {patient} accounted for')
                 except:
-                    print('Mapping not in database')
+                    print(f'Mapping {patient} not in database')
             else:
                 try:
-                    mapping_LL.append(vtu2numpy(mapping_base_name + '_' + lung) + str(patient))
-                    reduced_mapping_LL.append(vtu2numpy(mapping_base_name + '_reduced' + '_' + lung) + str(patient))  # Add a colorbar to show the gradient of the first component
+                    mapping_LL.append(vtu2numpy(mapping_base_name + '_' + lung) + str(patient).zfill(2))
+                    reduced_mapping_LL.append(vtu2numpy(mapping_base_name + '_reduced' + '_' + lung) + str(patient).zfill(2))  # Add a colorbar to show the gradient of the first component
                     indexes_mapping_LL.append(patient)
                 except:
                     print('Mapping not in database')
@@ -92,15 +104,14 @@ def _(plotter):
 
     U_soft_RL_centered, S_soft_RL_centered, V_soft_RL_centered = np.linalg.svd(mapping_RL_array - reduced_mapping_RL_array - barycenter_RL_stacked)
 
-    plt.figure()
-    plt.semilogy(S_soft_RL_centered[:-4], label='Right lung')
-    plt.xlabel('Indexes of modes')
-    plt.ylabel('Singular values')
-    plt.legend()
-    plt.title('Spherical mappings full mapping')
-    plt.show()
-    plt.close()
-
+    # plt.figure()
+    # plt.semilogy(S_soft_RL_centered[:-4], label='Right lung')
+    # plt.xlabel('Indexes of modes')
+    # plt.ylabel('Singular values')
+    # plt.legend()
+    # plt.title('Spherical mappings full mapping')
+    # plt.show()
+    # plt.close()
     return (
         S_soft_RL_centered,
         V_soft_RL_centered,
@@ -111,6 +122,32 @@ def _(plotter):
         pv,
         vtu2numpy,
     )
+
+
+@app.cell(hide_code=True)
+def _(S_soft_RL_centered):
+    import plotly.graph_objects as go
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(
+        y=S_soft_RL_centered[:-4],
+        mode='lines+markers',
+        name='Right lung',
+        hovertemplate='Mode Index: %{x}<br>Singular Value: %{y:.2e}'
+    ))
+
+    fig.update_layout(
+        title='Signular values decay - Morphed shpere mappings',
+        xaxis_title='Indexes of modes',
+        yaxis_title='Singular values',
+        yaxis_type="log",  # This handles the 'semilogy' equivalent
+        template='plotly_dark', # Optional: fits the marimo dark theme well
+        legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99)
+    )
+
+    fig.show()
+    return
 
 
 @app.cell
@@ -134,29 +171,59 @@ def _():
     return
 
 
-@app.cell(column=1)
+@app.cell(column=1, hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## Plot the latent space in a `ParallelCoordinates` plot
+
+    Here we can easily to browse the "unfolded" latent space
+    """)
+    return
+
+
+@app.cell
+def _(df_pl):
+    df_pl
+    return
+
+
+@app.cell(hide_code=True)
 def _():
     import marimo as mo
 
-    n_modes_slider = mo.ui.slider(start=3, stop=15, step=1, value=8, label="Components")
+    n_modes_slider = mo.ui.slider(start=3, stop=15, step=1, value=8, label="Number of modes")
     n_modes_slider
     return mo, n_modes_slider
 
 
-@app.cell
-def _(df_latent, mo, n_modes_slider):
+@app.cell(hide_code=True)
+def _(mo, n_modes_slider):
+    available_pcs = [f"PC{i+1}" for i in range(n_modes_slider.value-1)]
+
+    color_selector = mo.ui.dropdown(
+        options=available_pcs, 
+        value="PC1", 
+        label="Colour by component"
+    )
+
+    color_selector
+    return (color_selector,)
+
+
+@app.cell(hide_code=True)
+def _(color_selector, df_latent, mo, n_modes_slider):
     from wigglystuff import ParallelCoordinates
     import polars as pl
 
     # Convert pandas DataFrame to Polars 
     df_pl = pl.from_pandas(df_latent.iloc[:, :n_modes_slider.value]) 
-
+    df_pl = pl.from_pandas(df_latent.iloc[:, :n_modes_slider.value]).rename({"Patient_ID": "uid"})
     # Interactive parallel coordinate plot
     parallel_plot = mo.ui.anywidget(
         ParallelCoordinates(
             df_pl, 
             height=500, 
-            color_by="PC1"
+            color_by=color_selector.value
         )
     )
 
@@ -164,21 +231,21 @@ def _(df_latent, mo, n_modes_slider):
     return df_pl, parallel_plot
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(mo):
     zoom_slider = mo.ui.slider(start=0, stop=5, step=0.1, value=1, label="zoom level")
     zoom_slider
     return (zoom_slider,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(mo):
     number_plots_slider = mo.ui.slider(start=1, stop=40, step=1, value=5, label="Number of pyvista plots")
     number_plots_slider
     return (number_plots_slider,)
 
 
-@app.cell
+@app.cell(hide_code=True)
 def _(
     df_pl,
     lung,
@@ -207,18 +274,21 @@ def _(
             notebook=True
         )
         for i, idx in enumerate(selected_indices):
-            patient = df_pl["Patient_ID"][idx]
+            try:
+                patient = df_pl["Patient_ID"][idx]
+            except: 
+                patient = df_pl["uid"][idx]
             disp, base_mesh = vtu2numpy(mapping_base_name + '_' + lung + '_' + str(patient),return_output=True)
-    
-        
+
+
             # Reshape to (N, 3) for PyVista
             disp = mapping_RL[idx].reshape(-1, 3)
 
             pv_mesh = pv.wrap(base_mesh) 
-        
+
             current_mesh = pv_mesh.copy()
             current_mesh.points += disp
-        
+
             # revert z-axis direction
             current_mesh.points[:, 2] *= -1
 
@@ -236,14 +306,14 @@ def _(
         # Output html from pyvista to display in marimo
         with tempfile.NamedTemporaryFile(suffix=".html", delete=False) as tmp:
                 plotter.export_html(tmp.name)
-            
+
                 with open(tmp.name, 'r') as f:
                     html_content = f.read()
-            
+
         return mo.Html(f'<iframe srcdoc="{html_content.replace('"', '&quot;')}" width="100%" height="{400 * rows}px" style="border:none;"></iframe>')
 
 
-    
+
 
 
 
