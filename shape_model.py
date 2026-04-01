@@ -164,7 +164,7 @@ plt.semilogy(S_soft_RL_centered[:-4], label = "Right lung")
 plt.xlabel('Indexes of modes')
 plt.ylabel('Singular values')
 plt.legend()
-plt.title("Spherical mappings full mapping")
+plt.title("Morphed mappings full mapping")
 plt.show()
 plt.close()
 
@@ -214,7 +214,6 @@ plot_latent_space_3d(S_soft_RL_centered, V_soft_RL_centered)
 
 
 import pandas as pd
-import numpy as np
 
 # 1. Calculate the coordinates for each sample
 # Scores = S * Vh (taking the first 3 rows of Vh and first 3 singular values)
