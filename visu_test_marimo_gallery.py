@@ -14,7 +14,7 @@
 
 import marimo
 
-__generated_with = "0.20.4"
+__generated_with = "0.22.0"
 app = marimo.App(width="medium")
 
 
@@ -127,6 +127,11 @@ def _(idx, images, label_names, labels, np, plt, widget):
         _ax.axis("off")
     plt.tight_layout()
     fig
+    return
+
+
+@app.cell
+def _():
     return
 
 
