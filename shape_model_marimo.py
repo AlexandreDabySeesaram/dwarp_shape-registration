@@ -126,7 +126,7 @@ def _(plotter):
 
 
 @app.cell(hide_code=True)
-def _(S_soft_RL_centered):
+def _(S_soft_RL_centered, mo):
     import plotly.graph_objects as go
 
     fig = go.Figure()
@@ -147,7 +147,8 @@ def _(S_soft_RL_centered):
         legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99)
     )
 
-    fig.show()
+    # fig.show()
+    mo.ui.plotly(fig)
     return
 
 
