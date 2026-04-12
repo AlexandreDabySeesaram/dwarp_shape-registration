@@ -5,12 +5,12 @@ import glob
 
 #job = "configurations/registration_config"
 job = "configurations/barycenter_config"
- try:
+try:
      import tomllib  # Python 3.11+
- except ImportError:
+except ImportError:
      import tomli as tomllib  # Older versions
  
- with open(f"{job}.toml", "rb") as f:
+with open(f"{job}.toml", "rb") as f:
      config = tomllib.load(f)
  
 

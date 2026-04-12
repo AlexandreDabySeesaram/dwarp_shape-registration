@@ -142,9 +142,10 @@ def _(S_soft_RL_centered, mo):
         title='Signular values decay - Morphed shpere mappings',
         xaxis_title='Indexes of modes',
         yaxis_title='Singular values',
-        yaxis_type="log",  # This handles the 'semilogy' equivalent
-        template='plotly_dark', # Optional: fits the marimo dark theme well
-        legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99)
+        yaxis_type="log",  
+        template='plotly_dark', # fits the marimo dark theme well
+        legend=dict(yanchor="top", y=0.99, xanchor="right", x=0.99), 
+        dragmode='zoom'
     )
 
     # fig.show()
@@ -228,20 +229,6 @@ def _(color_selector, df_latent, mo, n_modes_slider):
 
 
 @app.cell(hide_code=True)
-def _(mo):
-    zoom_slider = mo.ui.slider(start=0, stop=5, step=0.1, value=1, label="zoom level")
-    zoom_slider
-    return (zoom_slider,)
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    number_plots_slider = mo.ui.slider(start=1, stop=40, step=1, value=5, label="Number of pyvista plots")
-    number_plots_slider
-    return (number_plots_slider,)
-
-
-@app.cell(hide_code=True)
 def _(
     df_pl,
     lung,
@@ -316,7 +303,21 @@ def _(
     return (get_mesh_grid,)
 
 
-@app.cell(column=2)
+@app.cell(column=2, hide_code=True)
+def _(mo):
+    zoom_slider = mo.ui.slider(start=0, stop=5, step=0.1, value=1, label="zoom level")
+    zoom_slider
+    return (zoom_slider,)
+
+
+@app.cell(hide_code=True)
+def _(mo):
+    number_plots_slider = mo.ui.slider(start=1, stop=40, step=1, value=5, label="Number of pyvista plots")
+    number_plots_slider
+    return (number_plots_slider,)
+
+
+@app.cell
 async def _(get_mesh_grid, parallel_plot):
     # import nest_asyncio
     # nest_asyncio.apply()
