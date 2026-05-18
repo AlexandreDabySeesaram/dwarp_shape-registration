@@ -1,0 +1,35 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.22.0",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "39cb239b29389ca1281f29d5f4f4c315",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stderr",
+          "text": "Warning: Appending zeros to replace the missing physical tag data.\nWarning: Appending zeros to replace the missing geometrical tag data.\nWarning: Appending zeros to replace the missing physical tag data.\nWarning: Appending zeros to replace the missing geometrical tag data.\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "LcGz",
+      "code_hash": null,
+      "outputs": [],
+      "console": []
+    }
+  ]
+}

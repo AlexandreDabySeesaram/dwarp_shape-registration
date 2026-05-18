@@ -51,6 +51,6 @@ gmsh.model.addPhysicalGroup(3, vol_tags, 1)
 # 5. Save the file
 # This will export the original 3D elements + the new 2D boundary elements
 gmsh.option.setNumber("Mesh.MshFileVersion", 2.2)
-gmsh.write("new_mesh_with_skin.msh")
+gmsh.write("new_mesh_with_skin_thin_lung.msh")
 
 gmsh.finalize()
