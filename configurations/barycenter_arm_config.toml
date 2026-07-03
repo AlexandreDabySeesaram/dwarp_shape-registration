@@ -7,10 +7,10 @@
 
 [mappings]
 
-coarsness		= "fine" # fine, coarse
-basename_left 		= "Mapping_arm"
+coarsness		        = "fine" # fine, coarse
+basename_left 		    = "Mapping_arm"
 mesh_initialisation     = "morphed_sphere" #lung, morphed_sphere
-fineness                            = "Fine"
+fineness                = "Fine"
 
 ####################################################
 ###                                              ###
